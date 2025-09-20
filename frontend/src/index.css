@@ -1,0 +1,15 @@
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+@import "tailwindcss";
+/* @import "daisyui"; */
+body {
+  background: linear-gradient(rgba(50, 101, 110, 0.747),rgba(160, 54, 5, 0.685)),url(/bg.jpg);
+   background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.bgimage{
+  background: url(../public/bgmessage.jpg);
+  background-position: center;
+  background-size: cover;
+}
