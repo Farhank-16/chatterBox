@@ -1,4 +1,5 @@
 Real-Time Chat Application (MERN Stack)
+
 This is a modern, high-performance real-time chat application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack and Socket.io. It features a smooth UI, instant messaging, and several advanced features found in major social platforms.
 
 ✨ Features
@@ -34,14 +35,16 @@ Security: JWT for Auth, BCrypt.js for encryption, Cookie-parser for session secu
 🛠️ Installation & Setup
 1. Clone the Repository
 Bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/Farhank-16/chatterBox.git
+
 cd your-repo-name
-2. Backend Configuration
+
+3. Backend Configuration
 Navigate to the backend directory and install dependencies:
 
-Bash
 cd backend
 npm install
+
 Create a .env file in the backend root and add the following:
 
 PORT=3000
