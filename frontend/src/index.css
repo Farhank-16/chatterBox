@@ -3,13 +3,13 @@
 @import "tailwindcss";
 /* @import "daisyui"; */
 body {
-  background: linear-gradient(rgba(58, 192, 216, 0.747),rgba(184, 66, 11, 0.842)),url(/bg.jpg);
+  background: linear-gradient(rgba(0, 0, 0, 0.747),rgba(255, 8, 0, 0.842));
    background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
-.bgimage{
-  background: url(../public/bgmessage.jpg);
-  background-position: center;
-  background-size: cover;
+
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }

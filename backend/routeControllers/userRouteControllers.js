@@ -2,12 +2,26 @@ import User from "../Models/userModels.js";
 import bcryptjs from "bcryptjs";
 import jwtToken from "../utils/jwtwebToken.js";
 
+
 export const userRegister = async (req, res) => {
     try {
         const { fullname, username, email, gender, password, profilepic } = req.body;
 
+        
+        // Password strength criteria: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Password too weak! Must be 8+ characters, include uppercase, lowercase, a number, and a special character." 
+            });
+        }
+        
+
+      
         // Check if username or email already exists
-        const user = await User.findOne({ username , email });
+        const user = await User.findOne({ $or: [{ username }, { email }] });
         if (user) {
             return res.status(400).json({ success: false, message: "Username or Email Already Exists" });
         }
@@ -15,20 +29,24 @@ export const userRegister = async (req, res) => {
         // Hash password
         const hashPassword = bcryptjs.hashSync(password, 8);
 
-        // Assign default profile picture if not provided
-        const defaultPic = gender === "male"
-            ? `https://avatar.iran.liara.run/public/boy?username=${username}`
-            : `https://avatar.iran.liara.run/public/girl?username=${username}`;
+      // Normalize gender to lowercase to avoid matching errors
+const userGender = gender?.toLowerCase();
 
-        const newUser = new User({
-            fullname,
-            username,
-            email,
-            gender,
-            password: hashPassword,
-            profilepic: profilepic || defaultPic
-        });
+// Assign default profile picture if not provided
+const defaultPic =
+  userGender === "male"
+    ? `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
+    : `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
 
+
+const newUser = new User({
+    fullname,
+    username,
+    email,
+    gender,
+    password: hashPassword,
+    profilepic: profilepic || defaultPic // This ensures we always have a URL
+});
         if(newUser){
         await newUser.save();
          jwtToken(newUser._id,res)
@@ -36,13 +54,14 @@ export const userRegister = async (req, res) => {
             res.status(500).send({success:false, message:"Invalid User Data"})
         }
         res.status(201).json({
-            _id: newUser._id,
-            fullname: newUser.fullname,
-            username: newUser.username,
-            profilepic: newUser.profilepic,
-            email: newUser.email,
-            message:"User Registered Succesfully"
-        });
+    success: true,
+    _id: newUser._id,
+    fullname: newUser.fullname,
+    username: newUser.username,
+    profilepic: newUser.profilepic,
+    email: newUser.email,
+    message: "User Registered Successfully"
+});
 
     } catch (error) {
         console.error(error);
@@ -109,4 +128,19 @@ export const userLogOut = async (req, res) => {
     }
 };
 
+export const removeChatter = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const loggedInUserId = req.user._id;
+
+    await User.findByIdAndUpdate(loggedInUserId, {
+      $pull: { chattedUsers: userId },
+    });
+
+    res.status(200).json({ success: true, message: "Chatter removed" });
+  } catch (error) {
+    console.log("Remove chatter error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
 

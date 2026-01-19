@@ -82,7 +82,6 @@ export const deleteMessage = async (req, res) => {
       return res.status(404).json({ success: false, message: "Message not found" });
     }
 
-    // ✅ sirf wahi user delete kar sake jo sender hai
     if (message.senderId.toString() !== userId.toString()) {
       return res.status(403).json({ success: false, message: "Not authorized" });
     }

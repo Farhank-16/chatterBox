@@ -6,8 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import Register from "./regiser/Register.jsx";
 import Home from "./home/Home.jsx";
 import { VerifyUser } from "./utils/VerifyUser.jsx";
-import Profile from "./home/components/Profile.jsx";
-import UserProfile from "./home/components/userProfile.jsx";
+
 
 function App() {
   const [allUsersData, setAllUsersData] = useState([]);
@@ -48,12 +47,6 @@ function App() {
   <Route element={<VerifyUser />}>
     <Route path="/" element={<Home users={allUsersData} />} />
 
-    {/* 👤 Apna Profile */}
-    <Route path="/profile" element={<Profile />} />
-    <Route path="/profile/:id" element={<Profile />} />
-
-    {/* 👤 Doosre User ka Profile */}
-    <Route path="/user/:id" element={<UserProfile />} />
   </Route>
 </Routes>
 
